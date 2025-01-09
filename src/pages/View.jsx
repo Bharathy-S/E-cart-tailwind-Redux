@@ -2,17 +2,23 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToWishlist } from '../redux/slices/wishlistSlice'
 
 const View = () => {
 
+  const dispatch =useDispatch()
+  const userWishlist = useSelector(state => state.wishlistReducer)
   const [product, setProduct]=useState({})
   
 
 const {id}= useParams()
 console.log(id);
-const {allProducts} = useSelector(state => state.productReducer);
-console.log(allProducts);
+console.log(product);
+
+
+// const {allProducts} = useSelector(state => state.productReducer);
+// console.log(allProducts);
 
 
 useEffect(()=>{
@@ -24,8 +30,16 @@ useEffect(()=>{
   
   
 },[])
-console.log(product);
 
+//function to call when wishlist button clicked
+const handleWisthlist=()=>{
+  const existingProduct = userWishlist?.find(item=>item?.id==id)
+  if(existingProduct){
+    alert("Product already in your wishlist!!")
+  }else{
+    dispatch(addToWishlist(product))
+  }
+}
   return (
     <>
       <Header />
@@ -37,7 +51,7 @@ console.log(product);
         <div>
             <img width={'450px'} height={'200px'} src={product?.thumbnail} alt="" />
             <div className='flex justify-between mt-5'>
-                  <button className='bg-blue-600 text-white p-2'>Add to Wishlist</button>
+                  <button onClick={handleWisthlist} className='bg-blue-600 text-white p-2'>Add to Wishlist</button>
                   <button className='bg-green-600 text-white p-2'>Add to Cart</button>
                 </div>
         </div>
