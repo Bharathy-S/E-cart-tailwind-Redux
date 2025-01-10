@@ -1,18 +1,32 @@
 //rafce
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Cart = () => {
+
+  const [cartTotal, setCartTotal]= useState(0)
+  const userCart=useSelector(state=>state.cartReducer)
+
+
+
+  useEffect(()=>{
+    if(userCart?.length>0){
+      setCartTotal(userCart?.map(item=>item.tatalPrice).reduce((a1,a2)=>a1+a2))
+    }
+  },[userCart])
   return (
     <>
       <Header/>
 
       {/* set paddingTop bcz we fixed the header nav, so it will overlap */}
       <div style={{ paddingTop: '100px' }} className='px-5'>
-
-        <>
-          <h1 className='text-5xl font-bold text-blue-600'>Cart Summary</h1>
+      <h1 className='text-5xl font-bold text-blue-600'>Cart Summary</h1>
+       {
+        userCart?.length>0 ?
+         <>
+          
 
           <div className='grid grid-cols-3 gap-4 mt-5'>
 
@@ -29,20 +43,24 @@ const Cart = () => {
                   </tr>
                 </thead>
                 <tbody>
+              {
+                userCart?.map((product,index)=>(
                   <tr>
-                    <td>1</td>
-                    <td>product name</td>
-                    <td><img height={'70px'} width={'70px'} src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSeAPhglCSQvSGNquX5AZRn4Zrn8AmgWwkdI64lycTkjhI0YDurdLlo4TKeiIrfU5l1CCkS1wL9CbJgVrV_MylNER8BhY4_mMR5vIvy2-rkAjWIkOmpuTRCNQ" alt="" /></td>
-                    <td>
-                      <div className='flex'>
-                        <button className='fornt-bold'>-</button>
-                        <input style={{width:'40px'}}   type="text" className='border p-1 rounded mx-2' value={2}readOnly />
-                        <button className='fornt-bold'>+</button>
-                      </div>
-                    </td>
-                    <td>$ 100</td>
-                    <td><button className='text-red-600'><i className='fa-solid fa-trash'></i></button></td>
-                  </tr>
+                  <td>{index+1}</td>
+                  <td>{product?.title}</td>
+                  <td><img height={'70px'} width={'70px'} src={product?.thumbnail} alt="" /></td>
+                  <td>
+                    <div className='flex'>
+                      <button className='fornt-bold'>-</button>
+                      <input style={{width:'40px'}}   type="text" className='border p-1 rounded mx-2' value={product?.quantity}readOnly />
+                      <button className='fornt-bold'>+</button>
+                    </div>
+                  </td>
+                  <td>${product?.totalPrice}</td>
+                  <td><button className='text-red-600'><i className='fa-solid fa-trash'></i></button></td>
+                </tr>
+                ))
+              }
                 </tbody>
               </table>
               <div className='float-right mt-5'>
@@ -62,6 +80,12 @@ const Cart = () => {
           </div>
 
         </>
+        :
+        <div className='flex justify-center items-center h-screen'>
+        <img src="https://sa.adanione.com/~/media/Foundation/Adani/emptyImages/empty_cart.gif" alt="" />
+        <h1 className='text-3xl text-red-600'>Your cart is empty!!!</h1>
+      </div>
+       }
 
       </div>
 
