@@ -7,7 +7,8 @@ import { addToWishlist } from '../redux/slices/wishlistSlice'
 import { addToCart } from '../redux/slices/cartSlice'
 
 const View = () => {
- const userCart =useSelector(state=>state.cartReducer)
+   //'useSelector' used to access states from store 
+  const userCart =useSelector(state=>state.cartReducer)
   const dispatch =useDispatch()
   const userWishlist = useSelector(state => state.wishlistReducer)
   const [product, setProduct]=useState({})

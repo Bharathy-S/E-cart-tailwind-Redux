@@ -5,10 +5,10 @@ import cartSlice from "./slices/cartSlice"
 // store
 const cartStore = configureStore({
     reducer: {
-        //now 'productSlice', 'wishlistSlice' , 'cartSlice' is available in store
+        //now 'productSlice', 'wishlistSlice' , 'cartSlice' is available in store from there 'slice' files
         productReducer: productSlice,
         wishlistReducer: wishlistSlice, 
-        cartReducer:cartSlice
+        cartReducer: cartSlice
     }
 })
 export default cartStore

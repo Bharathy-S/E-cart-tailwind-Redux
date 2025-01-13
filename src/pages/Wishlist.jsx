@@ -3,16 +3,19 @@ import React from 'react'
 import Header from '../components/Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeItem } from '../redux/slices/wishlistSlice'
+import { addToCart } from '../redux/slices/cartSlice'
 
 const Wishlist = () => {
+   //'useSelector' used to access states from store 
   const userCart=useSelector(state=>state.cartReducer)
   const dispatch =useDispatch()
   const userWishlist = useSelector(state=>state.wishlistReducer)
 
 
   const handleCart=(product)=>{
+    //to remove product after add to cart button clicked in wishlist page
     dispatch(removeItem(product.id))
-    dispatch(addToCart(product))
+    dispatch(addToCart(product))//to add product to cart
     const existingProduct = userCart?.find(item=>item?.id==id)
     if(existingProduct){
       alert("Product Quantity is Incrementing!!")
